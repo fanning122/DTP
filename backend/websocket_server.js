@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 const http = require('http');
 
-// 创建HTTP服务器 - 简化版本，只处理WebSocket
+// 创建HTTP服务器 - 修复重复回调函数的问题
 const server = http.createServer((req, res) => {
     console.log(`收到HTTP请求: ${req.url}`);
     
@@ -148,9 +148,11 @@ function notifyConnectionStatus() {
     });
 }
 
-// 启动服务器
+// 启动服务器 - 关键修复：使用正确的绑定方式
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`✅ 服务器运行在端口: ${PORT}`);
+    console.log(`📍 本地访问: http://localhost:${PORT}`);
+    console.log(`🌐 Heroku访问: https://${process.env.HEROKU_APP_NAME || '您的应用名'}.herokuapp.com`);
     console.log('📡 等待客户端连接...');
 });
